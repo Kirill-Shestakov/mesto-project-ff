@@ -1,3 +1,4 @@
+import {templateCard, placesList, popup, changeProfileButton} from '../index.js'
 const initialCards = [
     {
       name: "Архыз",
@@ -24,3 +25,20 @@ const initialCards = [
       link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
     }
 ];
+
+function createCard(name, link, deleteCard) {
+  const card = templateCard.querySelector(".card").cloneNode(true);
+  card.querySelector(".card__title").textContent = name;
+  card.querySelector(".card__image").setAttribute("src", link);
+  card.querySelector(".card__image").setAttribute("alt", name);
+  const deleteButton = card.querySelector(".card__delete-button");
+  deleteButton.addEventListener("click", deleteCard);
+  return card;
+}
+
+function deleteCard(evt) {
+  const cardElement = evt.target.closest(".card");
+  cardElement.remove();
+}
+
+export {initialCards, createCard, deleteCard};
