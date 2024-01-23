@@ -1,4 +1,8 @@
-import {templateCard, placesList, popup, changeProfileButton} from '../index.js'
+/* ИМПОРТ МОДУЛЕЙ */
+import {templateCard, placesList, imageName, imageLink, popupNewCard} from '../index.js'
+import {openModal, closeModal} from './modal'
+
+/*Массив с карточками*/
 const initialCards = [
     {
       name: "Архыз",
@@ -26,6 +30,8 @@ const initialCards = [
     }
 ];
 
+/* ФУНКЦИИ */
+/*Функция создания карточки*/
 function createCard(name, link, deleteCard) {
   const card = templateCard.querySelector(".card").cloneNode(true);
   card.querySelector(".card__title").textContent = name;
@@ -36,9 +42,18 @@ function createCard(name, link, deleteCard) {
   return card;
 }
 
+/*Функция удаления карточки*/
 function deleteCard(evt) {
   const cardElement = evt.target.closest(".card");
   cardElement.remove();
 }
 
-export {initialCards, createCard, deleteCard};
+/*Функция добавления новой карточки*/
+function addNewCard(evt) {
+  evt.preventDefault();
+  placesList.prepend(createCard(imageName.value, imageLink.value, deleteCard));
+  closeModal(popupNewCard)
+};
+
+/* ЭКСПОРТ МОДУЛЕЙ */
+export {initialCards, createCard, deleteCard, addNewCard};
