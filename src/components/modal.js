@@ -1,25 +1,22 @@
-/* ИМПОРТ МОДУЛЕЙ */
-import { popupNewCard, popupTypeImage, popupEdit } from "../index.js";
 
 /* ФУНКЦИИ */
 /*Функция открытия попапа*/
-function openModal(elementDOM) {
-  elementDOM.classList.add("popup_is-opened");
+function openModal(popupElement) {
+  popupElement.classList.add("popup_is-opened");
+  document.addEventListener('keydown', keydownEsc)
 }
 
 /*Функция закрытия попапа*/
-function closeModal(elementDOM) {
-  elementDOM.classList.remove("popup_is-opened");
+function closeModal(popupElement) {
+  popupElement.classList.remove("popup_is-opened");
+  document.removeEventListener('keydown', keydownEsc)
 }
-
-/*Функция закрытия попапов на кнопку 'Esc'*/
+/*Функция закрытия попапа на 'Escape'*/
 function keydownEsc(evt) {
   if (evt.key === "Escape") {
-    closeModal(popupEdit);
-    closeModal(popupNewCard);
-    closeModal(popupTypeImage);
+    closeModal(document.querySelector('.popup_is-opened'));
   }
 }
 
 /* ЭКСПОРТ МОДУЛЕЙ */
-export { openModal, closeModal, keydownEsc };
+export { openModal, closeModal };

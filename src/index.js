@@ -1,19 +1,14 @@
 /* ИМПОРТ МОДУЛЕЙ */
 import "./pages/index.css";
 import {
-  initialCards,
-  createCard,
-  deleteCard,
-  checkLike,
-  openImgPopup,
-  addNewCard,
+  createCard, deleteCard, checkLike
 } from "./components/cards";
-import { openModal, closeModal, keydownEsc } from "./components/modal";
+import { openModal, closeModal } from "./components/modal";
+import { initialCards } from "./components/array";
 
 /* DOM-ЭЛЕМЕНТЫ */
-const templateCard = document.querySelector("#card-template").content;
+
 const placesList = document.querySelector(".places__list");
-const profile = document.querySelector(".profile");
 const popupEdit = document.querySelector(".popup_type_edit");
 const popupNewCard = document.querySelector(".popup_type_new-card");
 const popupTypeImage = document.querySelector(".popup_type_image");
@@ -25,21 +20,34 @@ const profileDescription = document.querySelector(".profile__description");
 const formImage = popupNewCard.querySelector(".popup__form");
 const imageName = document.querySelector(".popup__input_type_card-name");
 const imageLink = document.querySelector(".popup__input_type_url");
-const pageContent = document.querySelector(".page__content");
+const editButton = document.querySelector('.profile__edit-button');
+const addButton = document.querySelector('.profile__add-button')
 
 /* ОБРАБОТЧИКИ СОБЫТИЙ */
 /*При нажатии кнопки 'сохранить' в окне 'Новое место' заполненые данные передаются функции createCard*/
 formImage.addEventListener("submit", addNewCard);
 
 /*При нажатии на заданный элемент открывается нужный попап*/
-function openPopup(evt) {
-  if (evt.target.classList.contains("profile__edit-button")) {
-    openModal(popupEdit);
-  } else if (evt.target.classList.contains("profile__add-button")) {
-    openModal(popupNewCard);
-  }
+function clickEditButton() {
+  addSmoothAnimation(popupEdit)
+  openModal(popupEdit);
+  nameInput.value = profileName.textContent;
+  jobInput.value = profileDescription.textContent;
 }
-profile.addEventListener("click", openPopup);
+function openAddPopup() {
+  addSmoothAnimation(popupNewCard)
+  openModal(popupNewCard);
+}
+function openTypePopup() {
+  addSmoothAnimation(popupTypeImage)
+  openModal(popupTypeImage);
+}
+
+function addSmoothAnimation(popupElement) {
+  popupElement.classList.add('popup_is-animated')
+}
+editButton.addEventListener('click', clickEditButton);
+addButton.addEventListener('click', openAddPopup);
 
 /*При нажатии на кнопку закрывается определенный попап*/
 function closePopap(evt) {
@@ -52,7 +60,6 @@ function closePopap(evt) {
 popupEdit.addEventListener("click", closePopap);
 popupNewCard.addEventListener("click", closePopap);
 popupTypeImage.addEventListener("click", closePopap);
-document.addEventListener("keydown", keydownEsc);
 
 /*При нажатии кнопки 'сохранить' в окне 'Редактировать профиль' заполненые данные передаются в определенные элементы*/
 function handleFormSubmit(evt) {
@@ -63,16 +70,20 @@ function handleFormSubmit(evt) {
 }
 formElement.addEventListener("submit", handleFormSubmit);
 
-/*При наведении на нужные элементы, попапом будет добавлен класс .popup_is-animated, который добавляет плавность анимации*/
-pageContent.addEventListener("mouseover", function (evt) {
-  if (evt.target.classList.contains("profile__edit-button")) {
-    popupEdit.classList.add("popup_is-animated");
-  } else if (evt.target.classList.contains("profile__add-button")) {
-    popupNewCard.classList.add("popup_is-animated");
-  } else if (evt.target.classList.contains("card__image")) {
-    popupTypeImage.classList.add("popup_is-animated");
-  }
-});
+/*Функция открытия попап с изображением*/
+function openImgPopup(name, link) {
+  openTypePopup()
+  document.querySelector(".popup__image").src = link;
+  document.querySelector(".popup__caption").textContent = name;
+}
+
+function addNewCard(evt) {
+  evt.preventDefault();
+  placesList.prepend(
+    createCard(imageName.value, imageLink.value, deleteCard, checkLike, openImgPopup)
+  );
+  closeModal(popupNewCard);
+}
 
 /* ЦИКЛЫ */
 /*Цикл, который добавляет карточки из массива initialCards*/
@@ -82,13 +93,3 @@ initialCards.forEach(function (item) {
   );
 });
 
-/* ЭКСПОРТ МОДУЛЕЙ */
-export {
-  templateCard,
-  placesList,
-  imageName,
-  imageLink,
-  popupNewCard,
-  popupTypeImage,
-  popupEdit,
-};
