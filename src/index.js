@@ -5,6 +5,7 @@ import {
 } from "./components/cards";
 import { openModal, closeModal } from "./components/modal";
 import { initialCards } from "./components/array";
+import { enableValidation, clearValidation } from "./components/validation";
 
 /* DOM-ЭЛЕМЕНТЫ */
 
