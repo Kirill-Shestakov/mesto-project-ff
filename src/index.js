@@ -5,7 +5,7 @@ import {
 } from "./components/cards";
 import { openModal, closeModal } from "./components/modal";
 import { initialCards } from "./components/array";
-import { enableValidation, clearValidation } from "./components/validation";
+import { enableValidation, clearValidation, validationConfig } from "./components/validation";
 
 /* DOM-ЭЛЕМЕНТЫ */
 
@@ -23,6 +23,8 @@ const imageName = document.querySelector(".popup__input_type_card-name");
 const imageLink = document.querySelector(".popup__input_type_url");
 const editButton = document.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button')
+const editForm = document.querySelector('form[name="edit-profile"]');
+const cardForm = document.querySelector('form[name="new-place"]');
 
 /* ОБРАБОТЧИКИ СОБЫТИЙ */
 /*При нажатии кнопки 'сохранить' в окне 'Новое место' заполненые данные передаются функции createCard*/
@@ -32,12 +34,14 @@ formImage.addEventListener("submit", addNewCard);
 function clickEditButton() {
   addSmoothAnimation(popupEdit)
   openModal(popupEdit);
+  enableValidation(editForm, validationConfig);
   nameInput.value = profileName.textContent;
   jobInput.value = profileDescription.textContent;
 }
 function openAddPopup() {
   addSmoothAnimation(popupNewCard)
   openModal(popupNewCard);
+  enableValidation(cardForm, validationConfig);
 }
 function openTypePopup() {
   addSmoothAnimation(popupTypeImage)
@@ -54,6 +58,8 @@ addButton.addEventListener('click', openAddPopup);
 function closePopap(evt) {
   if (evt.target.classList.contains("popup__close")) {
     closeModal(evt.currentTarget);
+    clearValidation(editForm, validationConfig)
+    clearValidation(formImage, validationConfig)
   } else if (evt.target.classList.contains("popup")) {
     closeModal(evt.currentTarget);
   }
@@ -93,4 +99,5 @@ initialCards.forEach(function (item) {
     createCard(item.name, item.link, deleteCard, checkLike, openImgPopup)
   );
 });
+
 
