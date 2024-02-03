@@ -6,7 +6,7 @@ import {
 import { openModal, closeModal } from "./components/modal";
 import { initialCards } from "./components/array";
 import { enableValidation, clearValidation, validationConfig } from "./components/validation";
-
+import { initializationUser, initializationCards, editProfile, addCard} from "./components/api";
 /* DOM-ЭЛЕМЕНТЫ */
 
 const placesList = document.querySelector(".places__list");
@@ -18,6 +18,7 @@ const nameInput = formElement.querySelector(".popup__input_type_name");
 const jobInput = formElement.querySelector(".popup__input_type_description");
 const profileName = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
+const profileAvatar = document.querySelector('.profile__image')
 const formImage = popupNewCard.querySelector(".popup__form");
 const imageName = document.querySelector(".popup__input_type_card-name");
 const imageLink = document.querySelector(".popup__input_type_url");
@@ -73,6 +74,7 @@ function handleFormSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
+  editProfile(nameInput, jobInput)
   closeModal(popupEdit);
 }
 formElement.addEventListener("submit", handleFormSubmit);
@@ -86,18 +88,11 @@ function openImgPopup(name, link) {
 
 function addNewCard(evt) {
   evt.preventDefault();
-  placesList.prepend(
-    createCard(imageName.value, imageLink.value, deleteCard, checkLike, openImgPopup)
-  );
+  addCard(imageName, imageLink)
   closeModal(popupNewCard);
 }
 
-/* ЦИКЛЫ */
-/*Цикл, который добавляет карточки из массива initialCards*/
-initialCards.forEach(function (item) {
-  placesList.append(
-    createCard(item.name, item.link, deleteCard, checkLike, openImgPopup)
-  );
-});
 
+initializationCards(placesList, createCard, deleteCard, checkLike, openImgPopup)
 
+initializationUser(profileName, profileDescription)
