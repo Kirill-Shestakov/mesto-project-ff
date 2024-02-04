@@ -26,6 +26,8 @@ const editButton = document.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button')
 const editForm = document.querySelector('form[name="edit-profile"]');
 const cardForm = document.querySelector('form[name="new-place"]');
+const promise = [initializationUser(), initializationCards()];
+
 
 /* ОБРАБОТЧИКИ СОБЫТИЙ */
 /*При нажатии кнопки 'сохранить' в окне 'Новое место' заполненые данные передаются функции createCard*/
@@ -92,7 +94,14 @@ function addNewCard(evt) {
   closeModal(popupNewCard);
 }
 
-
-initializationCards(placesList, createCard, deleteCard, checkLike, openImgPopup)
-
-initializationUser(profileName, profileDescription)
+Promise.all(promise)
+  .then(([userData, cardData]) => {
+    profileName.textContent = userData.name;
+    profileDescription.textContent = userData.about;
+    profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
+    cardData.forEach(function (cardData) {
+      placesList.append(
+        createCard(cardData, deleteCard, checkLike, openImgPopup, userData),
+      );
+    });
+  });

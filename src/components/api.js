@@ -1,40 +1,21 @@
-
-function initializationUser (name, description) {
-    fetch ('https://nomoreparties.co/v1/wff-cohort-5/users/me', {
+function initializationUser () {
+    return fetch ('https://nomoreparties.co/v1/wff-cohort-5/users/me', {
         headers: {
             authorization: 'c10d6346-ec50-40e0-a3b8-508ae8ac458d'
         }
     })
     .then(res => res.json())
-    .then((result) => {
-      name.textContent = result.name;
-      description.textContent = result.about;
-    })
 };
 
-
-function initializationCards(ElementDom, createCard, deleteCard, checkLike, openImgPopup) {
-    fetch ('https://nomoreparties.co/v1/wff-cohort-5/cards', {
+function initializationCards(/*ElementDom, createCard, deleteCard, checkLike, openImgPopup*/) {
+    return fetch ('https://nomoreparties.co/v1/wff-cohort-5/cards', {
         headers: {
             authorization: 'c10d6346-ec50-40e0-a3b8-508ae8ac458d'
         }
     })
     .then(res => res.json())
-    .then((result) => {
-      result.forEach(function (cardData) {
-        ElementDom.append(
-          createCard(cardData, deleteCard, checkLike, openImgPopup),
-        );
-      });
-    })
 }
 
-const promise = [initializationUser, initializationCards]
-
-Promise.all(promise)
-    .then((result) => {
-        console.log(result)
-    });
 
 function editProfile (name, description) {
     fetch('https://nomoreparties.co/v1/wff-cohort-5/users/me', {
@@ -64,7 +45,7 @@ function addCard(img, link) {
     }); 
 };
 
-function deleteCard () {
+function deleteCard (cardId) {
     fetch('https://nomoreparties.co/v1/wff-cohort-5/cards', {
         method: 'DELETE',
         headers: {
