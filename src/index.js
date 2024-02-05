@@ -1,7 +1,7 @@
 /* ИМПОРТ МОДУЛЕЙ */
 import "./pages/index.css";
 import {
-  createCard, deleteCard, checkLike
+  createCard, checkLike, deleteCard
 } from "./components/cards";
 import { openModal, closeModal } from "./components/modal";
 import { initialCards } from "./components/array";

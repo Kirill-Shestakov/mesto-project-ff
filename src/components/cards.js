@@ -1,3 +1,5 @@
+import {removeCard, getLike, deleteLike} from "./api";
+
 const templateCard = document.querySelector("#card-template").content.querySelector(".card");
 
 /* ФУНКЦИИ */
@@ -11,34 +13,54 @@ function createCard(cardData, deleteCard, checkLike, openImgPopup, userData) {
   card.querySelector(".card__title").textContent = cardData.name;
   image.setAttribute("src", cardData.link);
   image.setAttribute("alt", cardData.name);
-  numberLike.textContent = Object.keys(cardData.likes).length
+  numberLike.textContent = cardData.likes.length
+  cardData.likes.forEach(element => {
+    if (userData._id === element._id) {
+      likeButton.classList.add('card__like-button_is-active')
+    };
+  });
   if (userData._id === cardData.owner._id) {
     deleteButton.classList.add('card__delete-button-visible')
     deleteButton.addEventListener("click", () => {
-      deleteCard(card);
+      deleteCard(card, cardData._id);
     });
   };
-  likeButton.addEventListener("click", checkLike);
+  likeButton.addEventListener("click", () => {
+    checkLike(likeButton, cardData._id, cardData, numberLike)
+  });
   image.addEventListener("click", () => {
       openImgPopup(cardData.name, cardData.link)
   });
   return card;
 }
 
-/*Функция удаления карточки*/
-function deleteCard(cardElement) {
+
+function deleteCard(cardElement, CardId) {
   cardElement.remove();
+  removeCard(CardId)
 }
 
 
 /*Функция переключения лайка*/
-function checkLike(evt) {
-  evt.target.classList.toggle("card__like-button_is-active");
+function checkLike(likeButton, cardId, card, like) {
+  if (!likeButton.classList.contains('card__like-button_is-active')) {
+    getLike(cardId)
+      .then((card) => {
+        likeButton.classList.add('card__like-button_is-active')
+        like.textContent = card.likes.length
+      })
+  } else if (likeButton.classList.contains('card__like-button_is-active')) {
+    deleteLike(cardId)
+      .then((card) => {
+        likeButton.classList.remove('card__like-button_is-active')
+        like.textContent = card.likes.length
+      })
+  }
 }
 
 /* ЭКСПОРТ МОДУЛЕЙ */
 export {
-  deleteCard,
   checkLike,
-  createCard
+  createCard,
+  deleteCard
 };
