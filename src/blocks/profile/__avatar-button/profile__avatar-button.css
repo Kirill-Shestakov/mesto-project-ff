@@ -17,4 +17,11 @@
     position: absolute;
     top: 45px;
     left: 45px;
+    bottom: 0;
+    right: 0;
+    display: none;
 }
+
+.profile__avatar-button:hover {
+    opacity: 0.6;
+  }

@@ -1,89 +1,118 @@
-const config = {
-  baseUrl: 'https://nomoreparties.co/v1/cohort-42',
+const apiConfig = {
+  baseUrl: 'https://nomoreparties.co/v1/wff-cohort-5',
   headers: {
-    authorization: 'c56e30dc-2883-4270-a59e-b2f7bae969c6',
+    authorization: 'c10d6346-ec50-40e0-a3b8-508ae8ac458d',
     'Content-Type': 'application/json'
   }
 }
 
 function initializationUser () {
-    return fetch ('https://nomoreparties.co/v1/wff-cohort-5/users/me', {
-        headers: {
-            authorization: 'c10d6346-ec50-40e0-a3b8-508ae8ac458d'
-        }
+    return fetch (`${apiConfig.baseUrl}/users/me`, {
+      headers: apiConfig.headers
     })
-    .then(res => res.json())
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
 };
 
-function initializationCards(/*ElementDom, createCard, deleteCard, checkLike, openImgPopup*/) {
-    return fetch ('https://nomoreparties.co/v1/wff-cohort-5/cards', {
-        headers: {
-            authorization: 'c10d6346-ec50-40e0-a3b8-508ae8ac458d'
-        }
+function initializationCards() {
+    return fetch (`${apiConfig.baseUrl}/cards`, {
+        headers: apiConfig.headers
     })
-    .then(res => res.json())
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
 }
 
 
 function editProfile (name, description) {
-    fetch('https://nomoreparties.co/v1/wff-cohort-5/users/me', {
+    return fetch(`${apiConfig.baseUrl}/users/me`, {
         method: 'PATCH',
-        headers: {
-          authorization: 'c10d6346-ec50-40e0-a3b8-508ae8ac458d',
-          'Content-Type': 'application/json'
-        },
+        headers: apiConfig.headers,
         body: JSON.stringify({
           name: name.value,
           about: description.value
         })
-      }); 
+      })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      });
 };
 
 function addCard(img, link) {
-    fetch('https://nomoreparties.co/v1/wff-cohort-5/cards', {
+    return fetch(`${apiConfig.baseUrl}/cards`, {
         method: 'POST',
-        headers: {
-          authorization: 'c10d6346-ec50-40e0-a3b8-508ae8ac458d',
-          'Content-Type': 'application/json'
-        },
+        headers: apiConfig.headers,
         body: JSON.stringify({
           name: img.value,
           link: link.value
         })
-    }); 
+    })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
 };
 
 function removeCard (cardId) {
-    fetch(`https://nomoreparties.co/v1/wff-cohort-5/cards/${cardId}`, {
+    fetch(`${apiConfig.baseUrl}/cards/${cardId}`, {
         method: 'DELETE',
-        headers: {
-          authorization: 'c10d6346-ec50-40e0-a3b8-508ae8ac458d',
-          'Content-Type': 'application/json'
-        }
+        headers: apiConfig.headers
     }); 
 }
 
 function getLike(cardId) {
-  return fetch(`https://nomoreparties.co/v1/wff-cohort-5/cards/likes/${cardId}`, {
+  return fetch(`${apiConfig.baseUrl}/cards/likes/${cardId}`, {
     method: 'PUT',
-    headers: {
-      authorization: 'c10d6346-ec50-40e0-a3b8-508ae8ac458d',
-      'Content-Type': 'application/json'
-    }
+    headers: apiConfig.headers
   })
-  .then(res => res.json())
+  .then(res => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
+  });
 }
 
 function deleteLike(CardId) {
-  return fetch(`https://nomoreparties.co/v1/wff-cohort-5/cards/likes/${CardId}`, {
+  return fetch(`${apiConfig.baseUrl}/cards/likes/${CardId}`, {
     method: 'DELETE',
-    headers: {
-      authorization: 'c10d6346-ec50-40e0-a3b8-508ae8ac458d',
-      'Content-Type': 'application/json'
-    }
+    headers: apiConfig.headers
   })
-  .then(res => res.json())
+  .then(res => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
+  });
+}
+
+function updateAvatar(link) {
+  return fetch(`${apiConfig.baseUrl}/users/me/avatar`, {
+    method: 'PATCH',
+    headers: apiConfig.headers,
+    body: JSON.stringify({
+      avatar: link.value,
+    })
+  })
+  .then(res => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
+  });
 }
 
 
-export {initializationUser, initializationCards, editProfile, addCard, removeCard, getLike, deleteLike}
+export {initializationUser, initializationCards, editProfile, addCard, removeCard, getLike, deleteLike, updateAvatar}

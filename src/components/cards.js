@@ -26,7 +26,7 @@ function createCard(cardData, deleteCard, checkLike, openImgPopup, userData) {
     });
   };
   likeButton.addEventListener("click", () => {
-    checkLike(likeButton, cardData._id, cardData, numberLike)
+    checkLike(likeButton, cardData._id, numberLike)
   });
   image.addEventListener("click", () => {
       openImgPopup(cardData.name, cardData.link)
@@ -42,7 +42,7 @@ function deleteCard(cardElement, CardId) {
 
 
 /*Функция переключения лайка*/
-function checkLike(likeButton, cardId, card, like) {
+function checkLike(likeButton, cardId, like) {
   if (!likeButton.classList.contains('card__like-button_is-active')) {
     getLike(cardId)
       .then((card) => {
