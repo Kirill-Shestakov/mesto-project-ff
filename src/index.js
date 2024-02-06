@@ -112,7 +112,7 @@ function addNewCard(evt) {
   addCard(imageName, imageLink)
     .then((cardData) => {
       formImage.querySelector('.popup__button').textContent = 'Сохранение...';
-      placesList.append(createCard(cardData, deleteCard, checkLike, openImgPopup, cardData.owner));
+      placesList.prepend(createCard(cardData, deleteCard, checkLike, openImgPopup, cardData.owner));
       closeModal(popupNewCard);
     })
     .catch((err) => {
@@ -154,9 +154,11 @@ profileAvatarBtn.addEventListener('click', openAvatarPopup)
 
 profileAvatar.addEventListener('mouseover' , function() {
   profileAvatarBtn.classList.add('profile__avatar-button-visible');
+  document.querySelector('.profile__avatar-overlay').classList.add('profile__avatar-overlay-visible')
   
 });
 
 profileAvatar.addEventListener('mouseout' , function() {
   profileAvatarBtn.classList.remove('profile__avatar-button-visible');
+  document.querySelector('.profile__avatar-overlay').classList.remove('profile__avatar-overlay-visible')
 });
