@@ -19,14 +19,14 @@
     <section class="profile page__section">
       <div class="profile__image" style="background-image: url(<%=require('./images/avatar.jpg')%>);">
         <span class='profile__avatar-overlay'></span>
-        <button type="button" class="button profile__avatar-button"></button>
+        <button aria-label="Поменять аватарку" type="button" class="button profile__avatar-button"></button>
       </div>
       <div class="profile__info">
         <h1 class="profile__title"></h1>
-        <button class="profile__edit-button" type="button"></button>
+        <button aria-label="Изменить данные профиля" class="profile__edit-button" type="button"></button>
         <p class="profile__description"></p>
       </div>
-      <button class="profile__add-button" type="button"></button>
+      <button aria-label="Добавить карточку" class="profile__add-button" type="button"></button>
     </section>
     <section class="places page__section">
       <ul class="places__list">
@@ -43,9 +43,9 @@
       <button type="button" class="popup__close"></button>
       <h3 class="popup__title">Редактировать профиль</h3>
       <form class="popup__form" name="edit-profile" novalidate>
-        <input type="text" name="name" class="popup__input popup__input_type_name" placeholder="Имя" required minlength="2" maxlength="40" id="name-input" pattern="^[а-яА-ЯёЁa-zA-Z\- ]+$">
+        <input type="text" name="name" class="popup__input popup__input_type_name" placeholder="Имя" required minlength="2" maxlength="40" id="name-input" pattern="^[а-яА-ЯёЁa-zA-Z\- ]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
         <span class="popup__span_error name-input-error"></span>
-        <input type="text" name="description" class="popup__input popup__input_type_description" placeholder="Занятие" required minlength="2" maxlength="200" id="description-input" pattern="^[а-яА-ЯёЁa-zA-Z\- ]+$">
+        <input type="text" name="description" class="popup__input popup__input_type_description" placeholder="Занятие" required minlength="2" maxlength="200" id="description-input" pattern="^[а-яА-ЯёЁa-zA-Z\- ]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
         <span class="popup__span_error description-input-error"></span>
         <button type="submit" class="button popup__button">Сохранить</button>
       </form>
@@ -56,7 +56,7 @@
       <button type="button" class="popup__close"></button>
       <h3 class="popup__title">Новое место</h3>
       <form class="popup__form" name="new-place" novalidate>
-        <input type="text" name="place-name" class="popup__input popup__input_type_card-name" placeholder="Название" required minlength="2" maxlength="30" id="cardName-input" pattern="^[а-яА-ЯёЁa-zA-Z\- ]+$">
+        <input type="text" name="place-name" class="popup__input popup__input_type_card-name" placeholder="Название" required minlength="2" maxlength="30" id="cardName-input" pattern="^[а-яА-ЯёЁa-zA-Z\- ]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
         <span class="popup__span_error cardName-input-error"></span>
         <input type="url" name="link" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" required type="url" id="url-input">
         <span class="popup__span_error url-input-error"></span>
@@ -87,11 +87,11 @@
 <template id="card-template">
   <li class="places__item card">
     <img class="card__image" src="" alt="" />
-    <button type="button" class="card__delete-button"></button>
+    <button aria-label="Удалить" type="button" class="card__delete-button"></button>
     <div class="card__description">
       <h2 class="card__title">
       </h2>
-      <button type="button" class="card__like-button"></button>
+      <button aria-label="Лайк" type="button" class="card__like-button"></button>
       <span class="card__number-like"></span>
     </div>
   </li>

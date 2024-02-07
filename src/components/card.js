@@ -16,17 +16,15 @@ function createCard(cardData, deleteCard, checkLike, openImgPopup, userData) {
   image.setAttribute("src", cardData.link);
   image.setAttribute("alt", cardData.name);
   numberLike.textContent = cardData.likes.length;
-  cardData.likes.forEach((element) => {
-    if (userData._id === element._id) {
-      likeButton.classList.add("card__like-button_is-active");
-    }
-  });
+  if(cardData.likes.some(element => userData._id === element._id)) { 
+    likeButton.classList.add("card__like-button_is-active"); 
+  };
   if (userData._id === cardData.owner._id) {
     deleteButton.classList.add("card__delete-button-visible");
     deleteButton.addEventListener("click", () => {
       deleteCard(card, cardData._id);
     });
-  }
+  };
   likeButton.addEventListener("click", () => {
     checkLike(likeButton, cardData._id, numberLike);
   });
@@ -34,26 +32,22 @@ function createCard(cardData, deleteCard, checkLike, openImgPopup, userData) {
     openImgPopup(cardData.name, cardData.link);
   });
   return card;
-}
+};
 
 function deleteCard(cardElement, CardId) {
-  cardElement.remove();
   removeCard(CardId);
+  cardElement.remove();
 }
 
 /*Функция переключения лайка*/
 function checkLike(likeButton, cardId, like) {
-  if (!likeButton.classList.contains("card__like-button_is-active")) {
-    getLike(cardId).then((card) => {
-      likeButton.classList.add("card__like-button_is-active");
-      like.textContent = card.likes.length;
-    });
-  } else if (likeButton.classList.contains("card__like-button_is-active")) {
-    deleteLike(cardId).then((card) => {
-      likeButton.classList.remove("card__like-button_is-active");
-      like.textContent = card.likes.length;
-    });
-  }
+  const likeMethod = likeButton.classList.contains("card__like-button_is-active") ? deleteLike : getLike;
+  likeMethod(cardId) 
+          .then((card) => { 
+            likeButton.classList.remove("card__like-button_is-active"); 
+            like.textContent = card.likes.length; 
+      })
+  .catch(err => console.log(err));
 }
 
 /* ЭКСПОРТ МОДУЛЕЙ */

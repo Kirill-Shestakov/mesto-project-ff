@@ -9,7 +9,8 @@ const apiConfig = {
 function initializationUser() {
   return fetch(`${apiConfig.baseUrl}/users/me`, {
     headers: apiConfig.headers,
-  }).then((res) => {
+  })
+  .then((res) => {
     if (res.ok) {
       return res.json();
     }

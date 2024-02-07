@@ -1,12 +1,4 @@
-const validationConfig = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
-}
-
+import { validationConfig } from "./config";
 
 function showInputError (formElement, inputElement, errorMessage) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
@@ -24,7 +16,7 @@ function hideInputError (formElement, inputElement) {
 
 function checkInputValidity (formElement, inputElement) {
   if (inputElement.validity.patternMismatch) {
-    inputElement.setCustomValidity("Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы");
+    inputElement.setCustomValidity(inputElement.dataset.errorMessage);
   } else {
     inputElement.setCustomValidity("");
   }
@@ -51,7 +43,7 @@ function toggleButtonState (inputList, buttonElement) {
   }
 }
 
-function enableValidation (formElement) {
+const setEventListeners = (formElement) => {
   const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
   const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector)
   toggleButtonState(inputList, buttonElement)
@@ -63,12 +55,20 @@ function enableValidation (formElement) {
   });
 };
 
-function clearValidation (formElement) {
+function enableValidation (validationConfig) {
+  const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
+  formList.forEach((evt) => {
+    setEventListeners(evt)
+  });
+};
+
+function clearValidation (formElement, validationConfig) {
   const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
   const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector)
   inputList.forEach((inputElement) => {
       hideInputError(formElement, inputElement);
   });
+  formElement.reset()
   toggleButtonState(inputList, buttonElement)
 }
-export { enableValidation, clearValidation, validationConfig };
+export { enableValidation, clearValidation };
