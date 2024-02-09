@@ -49,13 +49,8 @@ function checkLike(likeButton, cardId, like) {
     : getLike;
   likeMethod(cardId)
     .then((card) => {
-      if (!likeButton.classList.contains("card__like-button_is-active")) {
-        likeButton.classList.add("card__like-button_is-active");
-        like.textContent = card.likes.length;
-      } else if (likeButton.classList.contains("card__like-button_is-active")) {
-        likeButton.classList.remove("card__like-button_is-active");
-        like.textContent = card.likes.length;
-      }
+      likeButton.classList.toggle("card__like-button_is-active");
+      like.textContent = card.likes.length;
     })
     .catch((err) => console.log(err));
 }
