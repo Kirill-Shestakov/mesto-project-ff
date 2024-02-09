@@ -36,6 +36,7 @@ function createCard(cardData, deleteCard, checkLike, openImgPopup, userData) {
 
 function deleteCard(cardElement, CardId) {
   removeCard(CardId).then(() => cardElement.remove())
+  .catch(err => console.log(err));
 }
 
 /*Функция переключения лайка*/
