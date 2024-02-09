@@ -49,7 +49,6 @@ function clickEditButton() {
   addSmoothAnimation(popupEdit);
   clearValidation(editForm, validationConfig);
   openModal(popupEdit);
-  enableValidation(editForm, validationConfig);
   nameInput.value = profileName.textContent;
   jobInput.value = profileDescription.textContent;
 }
@@ -86,11 +85,11 @@ popupTypeImage.addEventListener("click", closePopap);
 popupUpdateAvatar.addEventListener("click", closePopap);
 
 /*При нажатии кнопки 'сохранить' в окне 'Редактировать профиль' заполненые данные передаются в определенные элементы*/
-function handleFormFormSubmit(evt) {
+function handleFormProfileSubmit(evt) {
   evt.preventDefault();
+  formProfile.querySelector(".popup__button").textContent = "Сохранение...";
   editProfile(nameInput, jobInput)
     .then((res) => {
-      formProfile.querySelector(".popup__button").textContent = "Сохранение...";
       profileName.textContent = res.name;
       profileDescription.textContent = res.about;
     })
@@ -102,7 +101,7 @@ function handleFormFormSubmit(evt) {
     })
   closeModal(popupEdit);
 }
-formProfile.addEventListener("submit", handleFormFormSubmit);
+formProfile.addEventListener("submit", handleFormProfileSubmit);
 
 /*Функция открытия попап с изображением*/
 function openImgPopup(name, link) {
@@ -114,9 +113,9 @@ function openImgPopup(name, link) {
 
 function addNewCard(evt) {
   evt.preventDefault();
+  formImage.querySelector(".popup__button").textContent = "Сохранение...";
   addCard(imageName, imageLink)
     .then((cardData) => {
-      formImage.querySelector(".popup__button").textContent = "Сохранение...";
       placesList.prepend(
         createCard(
           cardData,
@@ -153,9 +152,9 @@ Promise.all(promises)
 
 function handleAvatarFormSubmit(evt) {
   evt.preventDefault();
+  formAvatar.querySelector(".popup__button").textContent = "Сохранение...";
   updateAvatar(avatarLink)
     .then((avatarData) => {
-      formAvatar.querySelector(".popup__button").textContent = "Сохранение...";
       profileAvatar.style.backgroundImage = `url(${avatarData.avatar})`;
       closeModal(popupUpdateAvatar);
     })

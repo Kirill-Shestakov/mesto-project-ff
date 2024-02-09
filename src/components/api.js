@@ -6,27 +6,25 @@ const apiConfig = {
   },
 };
 
+const handleResponse = (res) => { 
+  if (res.ok) { 
+    return res.json(); 
+  } 
+  return Promise.reject(`Ошибка: ${res.status}`);
+};
+
+
 function initializationUser() {
   return fetch(`${apiConfig.baseUrl}/users/me`, {
     headers: apiConfig.headers,
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  .then(handleResponse);
 }
 
 function initializationCards() {
   return fetch(`${apiConfig.baseUrl}/cards`, {
     headers: apiConfig.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(handleResponse);
 }
 
 function editProfile(name, description) {
@@ -37,12 +35,7 @@ function editProfile(name, description) {
       name: name.value,
       about: description.value,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(handleResponse);
 }
 
 function addCard(img, link) {
@@ -53,16 +46,11 @@ function addCard(img, link) {
       name: img.value,
       link: link.value,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(handleResponse);
 }
 
 function removeCard(cardId) {
-  fetch(`${apiConfig.baseUrl}/cards/${cardId}`, {
+  return fetch(`${apiConfig.baseUrl}/cards/${cardId}`, {
     method: "DELETE",
     headers: apiConfig.headers,
   });
@@ -72,24 +60,14 @@ function getLike(cardId) {
   return fetch(`${apiConfig.baseUrl}/cards/likes/${cardId}`, {
     method: "PUT",
     headers: apiConfig.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(handleResponse);
 }
 
 function deleteLike(CardId) {
   return fetch(`${apiConfig.baseUrl}/cards/likes/${CardId}`, {
     method: "DELETE",
     headers: apiConfig.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(handleResponse);
 }
 
 function updateAvatar(link) {
@@ -99,12 +77,7 @@ function updateAvatar(link) {
     body: JSON.stringify({
       avatar: link.value,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then(handleResponse);
 }
 
 export {
