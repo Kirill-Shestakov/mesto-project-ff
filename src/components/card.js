@@ -16,15 +16,15 @@ function createCard(cardData, deleteCard, checkLike, openImgPopup, userData) {
   image.setAttribute("src", cardData.link);
   image.setAttribute("alt", cardData.name);
   numberLike.textContent = cardData.likes.length;
-  if(cardData.likes.some(element => userData._id === element._id)) { 
-    likeButton.classList.add("card__like-button_is-active"); 
-  };
+  if (cardData.likes.some((element) => userData._id === element._id)) {
+    likeButton.classList.add("card__like-button_is-active");
+  }
   if (userData._id === cardData.owner._id) {
     deleteButton.classList.add("card__delete-button-visible");
     deleteButton.addEventListener("click", () => {
       deleteCard(card, cardData._id);
     });
-  };
+  }
   likeButton.addEventListener("click", () => {
     checkLike(likeButton, cardData._id, numberLike);
   });
@@ -32,22 +32,32 @@ function createCard(cardData, deleteCard, checkLike, openImgPopup, userData) {
     openImgPopup(cardData.name, cardData.link);
   });
   return card;
-};
+}
 
 function deleteCard(cardElement, CardId) {
-  removeCard(CardId).then(() => cardElement.remove())
-  .catch(err => console.log(err));
+  removeCard(CardId)
+    .then(() => cardElement.remove())
+    .catch((err) => console.log(err));
 }
 
 /*Функция переключения лайка*/
 function checkLike(likeButton, cardId, like) {
-  const likeMethod = likeButton.classList.contains("card__like-button_is-active") ? deleteLike : getLike;
-  likeMethod(cardId) 
-          .then((card) => { 
-            likeButton.classList.remove("card__like-button_is-active"); 
-            like.textContent = card.likes.length; 
-      })
-  .catch(err => console.log(err));
+  const likeMethod = likeButton.classList.contains(
+    "card__like-button_is-active"
+  )
+    ? deleteLike
+    : getLike;
+  likeMethod(cardId)
+    .then((card) => {
+      if (!likeButton.classList.contains("card__like-button_is-active")) {
+        likeButton.classList.add("card__like-button_is-active");
+        like.textContent = card.likes.length;
+      } else if (likeButton.classList.contains("card__like-button_is-active")) {
+        likeButton.classList.remove("card__like-button_is-active");
+        like.textContent = card.likes.length;
+      }
+    })
+    .catch((err) => console.log(err));
 }
 
 /* ЭКСПОРТ МОДУЛЕЙ */
