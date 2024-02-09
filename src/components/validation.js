@@ -55,8 +55,8 @@ const setEventListeners = (formElement, validationConfig) => {
 
 function enableValidation (validationConfig) {
   const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
-  formList.forEach((evt) => {
-    setEventListeners(evt, validationConfig)
+  formList.forEach((formElement) => {
+    setEventListeners(formElement, validationConfig)
   });
 };
 
